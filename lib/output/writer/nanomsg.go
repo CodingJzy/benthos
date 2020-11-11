@@ -7,15 +7,13 @@ import (
 	"sync"
 	"time"
 
-	"nanomsg.org/go-mangos"
-	"nanomsg.org/go-mangos/protocol/pub"
-	"nanomsg.org/go-mangos/protocol/push"
-	"nanomsg.org/go-mangos/transport/ipc"
-	"nanomsg.org/go-mangos/transport/tcp"
-
 	"github.com/Jeffail/benthos/v3/lib/log"
 	"github.com/Jeffail/benthos/v3/lib/metrics"
 	"github.com/Jeffail/benthos/v3/lib/types"
+	"go.nanomsg.org/mangos/v3"
+	"go.nanomsg.org/mangos/v3/protocol/pub"
+	"go.nanomsg.org/mangos/v3/protocol/push"
+	_ "go.nanomsg.org/mangos/v3/transport/all"
 )
 
 //------------------------------------------------------------------------------
@@ -124,9 +122,6 @@ func (s *Nanomsg) Connect() error {
 	); nil != err {
 		return err
 	}
-
-	socket.AddTransport(ipc.NewTransport())
-	socket.AddTransport(tcp.NewTransport())
 
 	if s.conf.Bind {
 		for _, addr := range s.urls {
